@@ -1,0 +1,17 @@
+Initialize the repository using Git from the command line.
+	#go to the directory 
+	ex. cd ~/workspace/thinkful/projects/hello_world
+	$git init
+master branch saving (tracking)
+	git status
+	git add .
+	git commit -m "Initial commit"
+	git status -> see "On branch master nothing to commit, working tree clean"
+	
+Create a repository on GitHub and connect your local repository to it.
+	#Go to Github -> repository -> New 
+Add and commit your files.
+	git remote add origin https://github.com/kyoshidaisy/fizz_buzz.git
+Push them to GitHub.
+	git push -u origin master
+

@@ -1,0 +1,7 @@
+ERROR:root:FIXME: Unimplemented - put('list', 'A sequence of things - created using []')
+ERROR:root:FIXME: Unimplemented - get('list')
+ERROR:root:FIXME: Unimplemented - put('test', 'A test -- what? []')
+ERROR:root:FIXME: Unimplemented - get('test')
+ERROR:root:FIXME: Unimplemented - update('test', "How's going?")
+ERROR:root:FIXME: Unimplemented - get('test')
+ERROR:root:FIXME: Unimplemented - get('none')
