@@ -6,3 +6,15 @@ ERROR:root:FIXME: Unimplemented - update('test', "How's going?")
 ERROR:root:FIXME: Unimplemented - get('test')
 ERROR:root:FIXME: Unimplemented - get('none')
 INFO:root:Constructing parser
+INFO:root:Constructing parser
+DEBUG:root:Constructing put subparser
+INFO:root:Constructing parser
+DEBUG:root:Constructing put subparser
+INFO:root:Constructing parser
+DEBUG:root:Constructing put subparser
+INFO:root:Constructing parser
+DEBUG:root:Constructing put subparser
+INFO:root:Constructing parser
+DEBUG:root:Constructing put subparser
+INFO:root:Constructing parser
+DEBUG:root:Constructing put subparser
