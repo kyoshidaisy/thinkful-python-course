@@ -22,15 +22,15 @@ def get(name):
     logging.error("FIXME: Unimplemented - get({!r})".format(name))
     return ""
 
-def update(name, snippet):
-    """update the snippet with a given name with confirmation.
+def edit(name,):
+    """open the snippet with text editor."
 
     If there is no such snippet, return '404: Snippet Not Found'.
 
     Returns the snippet.
     """
-    logging.error("FIXME: Unimplemented - update({!r}, {!r})".format(name, snippet))
-    return name, snippet
+    logging.error("FIXME: Unimplemented - update({!r}".format(name))
+    return name,
 
 def delete(name):
     """Delete the snippet with a given name with confirmation.
