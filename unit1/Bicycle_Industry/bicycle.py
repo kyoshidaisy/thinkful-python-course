@@ -1,5 +1,6 @@
 ##bicycle.py -- class file for the Bicycle Industry assignment -- ##
 #Class
+import logging
 
 class Bicycle(object):
 	model = ' '
@@ -67,13 +68,17 @@ class Customer(object):
 			    custbike = candidate_bike
 			    del inventory[custbike]
 			    print("Thank you! {0}, The bike {1} is good bike. The price is {2} Your fund is now {3} left.".format(custname, custbike, price, new_budget)
-			
-		    else:
+            else:
 				print("Okay.., Let's move on")
 		return
 			print(inventory.items)
 			shopname.sales()
 
-
+    def main():
+    """main
+    """
+    logging.error("FIXME: Unimplemented - main({!r})".format(name))
+    return "main function to be implemented"
 
 if __name__ == "__main__":
+    main()
