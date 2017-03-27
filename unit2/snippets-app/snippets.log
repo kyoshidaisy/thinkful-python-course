@@ -5,3 +5,4 @@ ERROR:root:FIXME: Unimplemented - get('test')
 ERROR:root:FIXME: Unimplemented - update('test', "How's going?")
 ERROR:root:FIXME: Unimplemented - get('test')
 ERROR:root:FIXME: Unimplemented - get('none')
+INFO:root:Constructing parser
