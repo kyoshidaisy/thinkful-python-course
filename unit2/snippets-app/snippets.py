@@ -21,7 +21,7 @@ def get(name):
     Returns the snippet.
     """
     logging.error("FIXME: Unimplemented - get({!r})".format(name))
-    return ""
+    return name
 
 def edit(name,):
     """open the snippet with text editor."
@@ -31,7 +31,7 @@ def edit(name,):
     Returns the snippet.
     """
     logging.error("FIXME: Unimplemented - update({!r}".format(name))
-    return name,
+    return name
 
 def delete(name):
     """Delete the snippet with a given name with confirmation.
@@ -56,7 +56,23 @@ def main():
     put_parser.add_argument("name", help="Name of the snippet")
     put_parser.add_argument("snippet", help="Snippet text")
 
+    # Subparser for the get command
+    logging.debug("Constructing put subparser")
+    get_parser = subparsers.add_parser("get", help="Retrieve a snippet")
+    get_parser.add_argument("name", help="Name of the snippet")
+
     arguments = parser.parse_args()
+
+    # Convert parsed arguments from Namespace to dictionary
+    arguments = vars(arguments)
+    command = arguments.pop("command")
+
+    if command == "put":
+        name, snippet = put(**arguments)
+        print("Stored {!r} as {!r}".format(snippet, name))
+    elif command == "get":
+        snippet = get(**arguments)
+        print("Retrieved snippet: {!r}".format(snippet))
 
 if __name__ == "__main__":
     main()
