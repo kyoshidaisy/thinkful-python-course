@@ -1,8 +1,15 @@
+import psycopg2
 import argparse
 import logging
 
 # Set the log output file, and the log level
 logging.basicConfig(filename="snippets.log", level=logging.DEBUG)
+
+# connection to database from Python
+logging.debug("Conneting to PostgreSQL")
+connection = psycopg2.connect(database='snippets')
+logging.debug("Database connection established.")
+
 
 def put(name, snippet):
     """
@@ -10,8 +17,15 @@ def put(name, snippet):
     
     Returns the name and the snippet
     """
-    logging.error("FIXME: Unimplemented - put({!r}, {!r})".format(name, snippet))
+    logging.info("Storing snippet {!r}: {!r}".format(name, snippet))
+    cursor = connection.cursor()
+    command = 'insert into snippets values (%s, %s)'
+    cursor.execute(command, (name, snippet))
+    connection.commit()
+    logging.debug("Snippet stored successfully.")
+    #    logging.error("FIXME: Unimplemented - put({!r}, {!r})".format(name, snippet))
     return name, snippet
+
 
 def get(name):
     """Retrieve the snippet with a given name.
@@ -20,10 +34,16 @@ def get(name):
 
     Returns the snippet.
     """
-    logging.error("FIXME: Unimplemented - get({!r})".format(name))
-    return name
+    logging.info("Retrieving snippet {!r}".format(name))
+    cursor = connection.cursor()
+    command = 'select message from snippets where keyword=%s'
+    cursor.execute(command, (name,))
+    row = cursor.fetchone()
+    logging.debug("Snippet retrieved successfully.")
+    #   logging.error("FIXME: Unimplemented - get({!r})".format(name))
+    return row
 
-def edit(name,):
+def edit(name, snippet):
     """open the snippet with text editor."
 
     If there is no such snippet, return '404: Snippet Not Found'.
@@ -32,6 +52,7 @@ def edit(name,):
     """
     logging.error("FIXME: Unimplemented - update({!r}".format(name))
     return name
+
 
 def delete(name):
     """Delete the snippet with a given name with confirmation.
@@ -42,6 +63,7 @@ def delete(name):
     """
     logging.error("FIXME: Unimplemented - get({!r})".format(name))
     return "not deleted"
+
 
 def main():
     """Main function"""
@@ -61,6 +83,7 @@ def main():
     get_parser = subparsers.add_parser("get", help="Retrieve a snippet")
     get_parser.add_argument("name", help="Name of the snippet")
 
+
     arguments = parser.parse_args()
 
     # Convert parsed arguments from Namespace to dictionary
@@ -74,7 +97,6 @@ def main():
         snippet = get(**arguments)
         print("Retrieved snippet: {!r}".format(snippet))
 
+
 if __name__ == "__main__":
     main()
-    
-    
