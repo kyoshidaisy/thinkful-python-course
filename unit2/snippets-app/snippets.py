@@ -1,17 +1,32 @@
+import psycopg2
 import argparse
 import logging
 
 # Set the log output file, and the log level
 logging.basicConfig(filename="snippets.log", level=logging.DEBUG)
 
+# connection to database from Python
+logging.debug("Conneting to PostgreSQL")
+connection = psycopg2.connect(database='snippets')
+logging.debug("Database connection established.")
+
+
 def put(name, snippet):
     """
     Store a snippet with an associated name.
-    
-    Returns the name and the snippet
+        Returns the name and the snippet
     """
-    logging.error("FIXME: Unimplemented - put({!r}, {!r})".format(name, snippet))
+    logging.info("Storing snippet {!r}: {!r}".format(name, snippet))
+    try:
+        with connection, connection.cursor() as cursor:
+            cursor.execute("insert into snippets values (%s, %s)", (name, snippet))
+    except psycopg2.IntegrityError as e:
+        with connection, connection.rollback() as rollback:
+            rollback.execute("update snippets set message=%s where keyword=%s", (snippet, name))
+    logging.debug("Snippet stored successfully.")
+    #    logging.error("FIXME: Unimplemented - put({!r}, {!r})".format(name, snippet))
     return name, snippet
+
 
 def get(name):
     """Retrieve the snippet with a given name.
@@ -20,18 +35,38 @@ def get(name):
 
     Returns the snippet.
     """
-    logging.error("FIXME: Unimplemented - get({!r})".format(name))
-    return name
+    logging.info("Retrieving snippet {!r}".format(name))
+    with connection, connection.cursor() as cursor:
+        cursor.execute("select message from snippets where keyword=%s", (name,))
+        row = cursor.fetchone()
+    logging.debug("Snippet retrieved successfully.")
+    #   logging.error("FIXME: Unimplemented - get({!r})".format(name))
+    if not row:
+        # No snippet was found with that name.
+        return "404: Snippet Not Found"
+    return row[0]
 
-def edit(name,):
-    """open the snippet with text editor."
+def update(name, snippet):
+    """Update a snippet with an given name."
 
     If there is no such snippet, return '404: Snippet Not Found'.
 
     Returns the snippet.
     """
-    logging.error("FIXME: Unimplemented - update({!r}".format(name))
-    return name
+    logging.info("Updating snippet {!r}: {!r}".format(name, snippet))
+    cursor = connection.cursor()
+    command = 'update snippets set message=%s where keyword=%s'
+    try:
+        cursor.execute(command, (snippet, name))
+        connection.commit()
+    except psycopg2.IntegrityError as e:
+        connection.rollback()
+        command = "insert into snippets values (%s, %s)"
+        cursor.execute(command, (name, snippet))
+    logging.debug("Snippet stored successfully.")
+    #    logging.error("FIXME: Unimplemented - put({!r}, {!r})".format(name, snippet))
+    return name, snippet
+
 
 def delete(name):
     """Delete the snippet with a given name with confirmation.
@@ -42,6 +77,7 @@ def delete(name):
     """
     logging.error("FIXME: Unimplemented - get({!r})".format(name))
     return "not deleted"
+
 
 def main():
     """Main function"""
@@ -61,6 +97,12 @@ def main():
     get_parser = subparsers.add_parser("get", help="Retrieve a snippet")
     get_parser.add_argument("name", help="Name of the snippet")
 
+    # Subparser for the put command
+    logging.debug("Constructing update subparser")
+    put_parser = subparsers.add_parser("update", help="Update a snippet")
+    put_parser.add_argument("name", help="Name of the snippet")
+    put_parser.add_argument("snippet", help="Snippet text")
+
     arguments = parser.parse_args()
 
     # Convert parsed arguments from Namespace to dictionary
@@ -70,11 +112,15 @@ def main():
     if command == "put":
         name, snippet = put(**arguments)
         print("Stored {!r} as {!r}".format(snippet, name))
+    
+    elif command == "update":
+        name, snippet = update(**arguments)
+        print("Update {!r} on {!r}".format(snippet, name))
+    
     elif command == "get":
         snippet = get(**arguments)
         print("Retrieved snippet: {!r}".format(snippet))
 
+
 if __name__ == "__main__":
     main()
-    
-    
