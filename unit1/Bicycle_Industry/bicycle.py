@@ -1,84 +1,86 @@
-##bicycle.py -- class file for the Bicycle Industry assignment -- ##
-#Class
-import logging
+## bicycle.py -- class file for the Bicycle Industry assignment -- ##
+# Class
+
 
 class Bicycle(object):
-	model = ' '
-	weight = 0
-	cost = 0
-	
-	def __init__(self, model, weight, cost):
-		self.model = model
-		self.weight = weight
-		self.cost = cost
-		
+    """
+    model -string: Bike model name
+    weight - integer: Bike wight in lbs
+    cost - integer: Bike production cost
+    """
+
+    def __init__(self, model, weight, cost):
+        self.model = model
+        self.weight = weight
+        self.cost = cost
+
 
 class Bikeshop(object):
-	shopname = 'Python Cyclery'
-	inventory = {}
-	margin = 20
-	profit = (cost * margin) / 100.0
-	
-	def __init__(self, shopname):
-		self.inventory = inventory
-		self.margin = margin
-		self.profit = profit
-	
-	def show_inventory(self):
-		stock = model
-		price = cost + profit
-		for k, v in inventory.items():
-			inventory[stock] = price
-			print(k, v)
-		print
-	
-	
-	def sales(self):
-		revenue = ()
-		sold = custbike()
-		revenue = revenue + profit(sold)
-		print(sum(revenue))
-		
-class Customer(object):
-	custname = ' '
-	budget = 0
-	custbike = ' '
-	
-	def __init__(self, custname):
-		self.budget = budget
-		self.custbike = custbike
-	
-	def list_bike(self):
-		listing = {}
-		for k, v in intentory.items():
-			if inventory.value >= budget[custname]:
-				listing[key] = inventory.value
-				print(k,v)
-			else:
-				print("Sorry, No matched bike is available.")
-		print()	
-	
-	def purchase(self):
-		for k, v in listing.items():
-			candidate_bike = listing[key]
-			answer = raw_input("Would you like to take {}?    (yes or no)".format(candidate_bike))
-            if answer.lower() == 'y' or answer.lower() == 'yes':
-			    new_budget = (budget[custname] - price)
-			    budget[custname] = new_budget
-			    custbike = candidate_bike
-			    del inventory[custbike]
-			    print("Thank you! {0}, The bike {1} is good bike. The price is {2} Your fund is now {3} left.".format(custname, custbike, price, new_budget)
-            else:
-				print("Okay.., Let's move on")
-		return
-			print(inventory.items)
-			shopname.sales()
-
-    def main():
-    """main
     """
-    logging.error("FIXME: Unimplemented - main({!r})".format(name))
-    return "main function to be implemented"
+    shopname -string: Bile shop name = 'Python Cyclery'
+    inventory -dic: Bile model [key] and inventory count [value] as integer
+    margin - float - Percentage of bike sales price addition = 20%
+    profit - integer: Total profit made on bile sales = (cost * margin) / 100.0
+    """
 
-if __name__ == "__main__":
-    main()
+    def __init__(self, shopname, inventory=None, margin=0.0):
+        if inventory is None:
+            inventory = {}
+        self.shopname = shopname
+        self.inventory = inventory
+        self.margin = margin
+        self.profit = 0
+
+    def price(self, bicycle):
+        """Return sale price for a bike"""
+        bikeprice = int(bicycle.cost() + (bicycle.cost() * self.margin))
+        return bikeprice
+
+    def sell_bike(self, bicycle):
+        """Sell bicycle with the price, return profit, and add to sales balance"""
+        # Check if bike is available in inventory
+        if self.inventory[bicycle] > 0:
+            # Calc the bike profit
+            bikeprofit = self.price(bicycle) - bicycle.cost()
+            # Add profit to profit balance
+            self.profit += bikeprofit
+            # Remove bike from inventory stock
+            self.inventory[bicycle] -= 1
+            # Confirmation
+            print("{} has successfully sold a {} for ${}.".format(self.shopname, bicycle.model, bikeprofit))
+        else:
+            print("{} bike is not in stock. Sorry.".format(bicycle))
+
+    def show_inventory(self, price_limit=9999):
+        """ Show inventory with bike name, sale price with optional price limit for customer budget"""
+        print("Name    Count    Sale Price")
+        for bicycle in self.inventory:
+            price = self.price(bicycle)
+            if price < price_limit:
+                print("{}    {}    ${}".format(bicycle.model, self.inventory[bicycle], price))
+
+    def reset_profit(self):
+        """ Reset profit balance to zero """
+        self.profit = 0
+
+
+class Customer(object):
+    """
+    Bike customer with:
+    custname -string: Customer Name
+    budget -integer: Customer funds used for purchasing a bike
+    custbike - bicycle class: Bike owned by customer
+    """
+
+    def __init__(self, custname, budget, bicycle=None):
+        self.custname = custname
+        self.budget = budget
+        self.bicycle = bicycle
+
+    def purchase(self, bicycle, bikecost):
+        """Customer purchases bike and reduce budget"""
+        self.bicycle = bicycle
+        self.budget -= bikecost
+        # Confirmation
+        print("Congrats {}, you bought {} for ${}. It's nice bike! You have ${} remaining of your budget.".format(
+            self.custname, bicycle.model, bikecost, self.budget))

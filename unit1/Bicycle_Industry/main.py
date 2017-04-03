@@ -1,62 +1,61 @@
-##main.py -- class file for the Bicycle Industry assignment -- ##
+# main.py -- class file for the Bicycle Industry assignment -- #
 
 from bicycle import Bicycle, Bikeshop, Customer
 
-#Bicycle data#
-	#model list
-models = ["Cruiser", "Citybike", "Hybrid", "Hardtail", "Aluroad", "Carbonracer"]
-	#weight dict
-weight = {
-		models[0]:17, 
-		models[1]:16, 
-		models[2]:15,
-		models[3]:12,
-		models[4]:10,
-		models[5]:7,
-		}
-	#cost data#
-cost = {
-		models[0]:150, 
-		models[1]:210, 
-		models[2]:300,
-		models[3]:400,
-		models[4]:600,
-		models[5]:750,
-		}
+# Bicycle data#
 
+Cruiser = Bicycle("Cruiser", 17, 150)
+BMX = Bicycle("BMX", 16, 210)
+Hybrid = Bicycle("Hybrid", 15, 300)
+Hardtail = Bicycle("Hardtail", 12, 400)
+Aluroad = Bicycle("Aluroad", 10, 600)
+Carbonracer = Bicycle("Carbonracer", 7, 850)
 
-	
-#shop data#
-shopname = "Python Cyclery"
-margin = 20
+# shop data#
+PythonCyclery = Bikeshop("PythonCyclery",
+                         {
+                             Cruiser: 5,
+                             BMX: 7,
+                             Hybrid: 4,
+                             Hardtail: 3,
+                             Aluroad: 4,
+                             Carbonracer: 2,
+                         },
+                         0.20)
 
+# Customer data#
+Dave = Customer("Dave", 200)
+Paul = Customer("Paul", 500)
+Matt = Customer("Matt", 1000)
 
-#Customer data#
-custnames = ["Dave", "Paul", "Matt"]
-budget = {
-		custnames[0]:200, 
-		custnames[1]:500, 
-		custnames[2]:1000,
-		}		
+customers = [Dave, Paul, Matt]
 
-#print1
-#name of the customer (each) and list of bikes in their budget
-for custname in custnames:
-	print(custname)
-	custname.list_bike()
-#print2
-#initial inventory of the shop
-	print(shopname)
-	shopname.show_inventory()
+# print1
+# name of the customer (each) and list of bikes in their budget
+for customer in customers:
+    print("{} Current Inventory for {}".format(PythonCyclery.shopname, customer.custname))
+    PythonCyclery.show_inventory(customer.budget)
+    print('\n\n')
 
-#print3
-#have each of the customer purchase a bike
-#print the name of bike, cost, rest of his fund
-#after each purchase, update inventory
-for custname in custnames:
-	custname.purchase()
-#after all three, print the shop's profit made.
-shopname.sales()
-	
+# print2
+# initial inventory of the shop
+print("Shop: {} -- Initial Inventory".format(PythonCyclery.shopname))
+PythonCyclery.show_inventory()
+print('\n\n')
 
+# print3
+# have each of the customer purchase a bike
+# print the name of bike, cost, rest of his fund
+PythonCyclery.reset_profit()
+bike_purchases = {Dave: Cruiser, Paul: Hardtail, Matt: Carbonracer, }
+print("Bike purchases")
+for customer in bike_purchases:
+    bike_sold = bike_purchases[customer]
+    customer.purchase(bike_sold, PythonCyclery.price(bike_sold))
+    PythonCyclery.sell_bike(bike_sold)
+    print("  ")
 
+# after each purchase, update inventory
+print("{} Updated inventory".format(PythonCyclery.shopname))
+PythonCyclery.show_inventory()
+print("   {} Total Profit is ${}".format(PythonCyclery.shopname, PythonCyclery.profit))
