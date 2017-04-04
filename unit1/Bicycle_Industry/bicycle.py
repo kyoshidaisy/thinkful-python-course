@@ -48,16 +48,16 @@ class Bikeshop(object):
             self.inventory[bicycle] -= 1
             # Confirmation
             print("{} has successfully sold a {} for ${}.".format(self.shopname, bicycle.model, bikeprofit))
-        else:bn
+        else:
             print("{} bike is not in stock. Sorry.".format(bicycle))
 
     def show_inventory(self, price_limit=9999):
         """ Show inventory with bike name, sale price with optional price limit for customer budget"""
         print("Name    Count    Sale Price")
         for bicycle in self.inventory:
-            bikeprice = self.price(bicycle)
-            if bikeprice < price_limit:
-                print("{}    {}    ${}".format(bicycle.model, self.inventory[bicycle], bikeprice))
+            saleprice = self.price(bicycle)
+            if saleprice < price_limit:
+                print("{}    {}    ${}".format(bicycle.model, self.inventory[bicycle], saleprice))
 
     def reset_profit(self):
         """ Reset profit balance to zero """
