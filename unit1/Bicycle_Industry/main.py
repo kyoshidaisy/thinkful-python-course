@@ -1,6 +1,6 @@
 # main.py -- class file for the Bicycle Industry assignment -- #
 
-from bicycle import Bicycle, Bikeshop, Customer
+from bicycles import Bicycle, Bikeshop, Customer
 
 # Bicycle data#
 
@@ -9,7 +9,7 @@ BMX = Bicycle("BMX", 16, 210)
 Hybrid = Bicycle("Hybrid", 15, 300)
 Hardtail = Bicycle("Hardtail", 12, 400)
 Aluroad = Bicycle("Aluroad", 10, 600)
-Carbonracer = Bicycle("Carbonracer", 7, 850)
+Carbonracer = Bicycle("Carbonracer", 7, 800)
 
 # shop data#
 PythonCyclery = Bikeshop("PythonCyclery",
@@ -30,17 +30,20 @@ Matt = Customer("Matt", 1000)
 
 customers = [Dave, Paul, Matt]
 
+print("\nWelcome our bike shop {}!\n".format(PythonCyclery.shopname))
+
 # print1
 # name of the customer (each) and list of bikes in their budget
 for customer in customers:
     print("{} Current Inventory for {}".format(PythonCyclery.shopname, customer.custname))
+    # print(PythonCyclery.show_inventory(9999))
     PythonCyclery.show_inventory(customer.budget)
     print('\n\n')
 
 # print2
 # initial inventory of the shop
 print("Shop: {} -- Initial Inventory".format(PythonCyclery.shopname))
-PythonCyclery.show_inventory()
+PythonCyclery.show_inventory(9999)
 print('\n\n')
 
 # print3
@@ -48,14 +51,14 @@ print('\n\n')
 # print the name of bike, cost, rest of his fund
 PythonCyclery.reset_profit()
 bike_purchases = {Dave: Cruiser, Paul: Hardtail, Matt: Carbonracer, }
-print("Bike purchases")
 for customer in bike_purchases:
     bike_sold = bike_purchases[customer]
-    customer.purchase(bike_sold, PythonCyclery.price(bike_sold))
+    customer.purchase(bike_sold)
     PythonCyclery.sell_bike(bike_sold)
     print("  ")
 
 # after each purchase, update inventory
 print("{} Updated inventory".format(PythonCyclery.shopname))
-PythonCyclery.show_inventory()
+PythonCyclery.show_inventory(9999)
 print("   {} Total Profit is ${}".format(PythonCyclery.shopname, PythonCyclery.profit))
+
