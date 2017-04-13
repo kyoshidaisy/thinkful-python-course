@@ -46,6 +46,7 @@ def get(name):
         return "404: Snippet Not Found"
     return row[0]
 
+
 def update(name, snippet):
     """Update a snippet with an given name."
 
@@ -112,11 +113,11 @@ def main():
     if command == "put":
         name, snippet = put(**arguments)
         print("Stored {!r} as {!r}".format(snippet, name))
-    
+
     elif command == "update":
         name, snippet = update(**arguments)
         print("Update {!r} on {!r}".format(snippet, name))
-    
+
     elif command == "get":
         snippet = get(**arguments)
         print("Retrieved snippet: {!r}".format(snippet))
