@@ -61,7 +61,7 @@ print('\n\n')
 # print the name of bike, cost, rest of his fund
 PythonCyclery.reset_profit()
 # bike_purchases = {Dave: Cruiser, Paul: Hardtail, Matt: Carbonracer, }
-# print(bike_purchases)
+print(bike_purchases)
 for customer in bike_purchases:
     bike_sold = bike_purchases[customer]
     customer.purchase(bike_sold)

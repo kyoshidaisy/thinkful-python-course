@@ -3,6 +3,13 @@ Bicycle Industry assignment
 Model the Bicycle Industry
 https://courses.thinkful.com/pip-001v3/project/1.3.4
 
+04/13/2017 extend branch
+Added purchase selection dialog -- error line 67 of main.py --
+line 49: bike_purchases[customer.custname] = bike_to_buy
+-- expected like: bike_purchases = {Dave: Cruiser, Paul: Hardtail, Matt: Carbonracer, }
+ however reality is {'Dave': 'Cruiser', 'Paul': 'Cruiser', 'Matt': 'Cruiser'} dic attributes became storings...
+
+
 4/6/2017
 
 Fixed the error
