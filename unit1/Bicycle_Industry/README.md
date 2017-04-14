@@ -3,6 +3,8 @@ Bicycle Industry assignment
 Model the Bicycle Industry
 https://courses.thinkful.com/pip-001v3/project/1.3.4
 
+04/13/2017 create altclass branch
+
 04/13/2017 extend branch
 Added purchase selection dialog -- error line 67 of main.py --
 line 49: bike_purchases[customer.custname] = bike_to_buy
