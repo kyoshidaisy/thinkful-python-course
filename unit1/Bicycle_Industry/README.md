@@ -3,6 +3,7 @@ Bicycle Industry assignment
 Model the Bicycle Industry
 https://courses.thinkful.com/pip-001v3/project/1.3.4
 
+04/14/2017 create altclass branch for extra challenge task
 
 04/14/2017 extend branch
 Still no clue about the error:
