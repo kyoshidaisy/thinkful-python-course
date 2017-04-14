@@ -3,6 +3,16 @@ Bicycle Industry assignment
 Model the Bicycle Industry
 https://courses.thinkful.com/pip-001v3/project/1.3.4
 
+
+04/14/2017 extend branch
+Still no clue about the error:
+
+Traceback (most recent call last):
+  File "/home/koji/PycharmProjects/thinkful-python-course/unit1/Bicycle_Industry/main.py", line 67, in <module>
+    customer.purchase(bike_sold)
+AttributeError: 'str' object has no attribute 'purchase'
+
+
 04/13/2017 extend branch
 Added purchase selection dialog -- error line 67 of main.py --
 line 49: bike_purchases[customer.custname] = bike_to_buy
@@ -14,12 +24,14 @@ line 49: bike_purchases[customer.custname] = bike_to_buy
 
 Fixed the error
 
-To do:
-Add dialog purchase selection (Now purchase is fixed in main.py)
+**To do:**
 
-Disallow the purchase when the budget is negative
+1. Add dialog purchase selection (Now purchase is fixed in main.py): added
+1.5. error of bike_purchases fix needed
 
-Work for extra challenge: 
+2.  Disallow the purchase when the budget is negative: do after 1.5
+
+_**Work for extra challenge:**_ to create branch altclass
 
 Alter your classes
 You should add new classes to represent the following bike parts:
@@ -41,7 +53,7 @@ Have a weight equal to the sum of the weight of the frame and two wheels
 Have a cost to produce equal to the sum of the two wheels' and frame's cost to produce
 You may also need to update your testing script to reflect the changes that you have made here.
 
-Extension Exercise
+**Extension Exercise**
 
 If the extra challenges were not a problem and you're running ahead of schedule then you could try to extend your model even further to add bicycle manufacturers.
 
