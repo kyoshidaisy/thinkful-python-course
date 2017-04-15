@@ -1,4 +1,4 @@
-# main.py -- class file for the Bicycle Industry assignment -- #
+# main.py -- main file for the Bicycle Industry assignment -- #
 
 from bicycles import Wheel, Frame, Bicycle, Bikeshop, Customer
 

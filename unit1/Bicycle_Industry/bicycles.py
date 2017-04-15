@@ -1,5 +1,5 @@
 # bicycles.py -- class file for the Bicycle Industry assignment --
-# Class
+# Classes
 
 class Wheel(object):
     """
