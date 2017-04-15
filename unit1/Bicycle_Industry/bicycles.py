@@ -1,12 +1,12 @@
 # bicycles.py -- class file for the Bicycle Industry assignment --
 # Class
 
-
-class Bicycle(object):
+class Wheel(object):
     """
-    model -string: Bike model name
-    weight - integer: Bike wight in lbs
-    cost - integer: Bike production cost
+    Wheel class
+    model - string: wheel model name
+    weight - integer: single wheel weight
+    cost - integer: produce cost
     """
 
     def __init__(self, model, weight, cost):
@@ -14,12 +14,49 @@ class Bicycle(object):
         self.weight = weight
         self.cost = cost
 
+
+class Frame(object):
+    """
+    Frame class
+    model - string: frame model name - aluminum, carbon, or steel
+    weight - integer: frame weight
+    cost - integer: produce cost
+    """
+
+    def __init__(self, model, weight, cost):
+        self.model = model
+        self.weight = weight
+        self.cost = cost
+
+
+class Bicycle(object):
+    """
+    model -string: Bike model name
+    weight - integer: Bike wight in lbs
+    cost - integer: Bike production cost
+    - Be comprised of two wheels of the same type and a frame
+    - Have a weight equal to the sum of the weight of the frame and two wheels
+    - Have a cost to produce equal to the sum of the two wheels' and frame's cost to produce
+    """
+
+    def __init__(self, model, wheeltype, frametype):
+        self.model = model
+        self.wheeltype = wheeltype
+        self.frametype = frametype
+
+    def weight(self):
+        bikeweight = (self.wheeltype.weight * 2) + self.frametype.weight
+        return bikeweight
+
+    def cost(self):
+        bikecost = (self.wheeltype.cost * 2) + self.frametype.cost
+        return bikecost
+
     def price(self):
         """Return sale price for a bike"""
-        bikeprice = int(self.cost * 1.20)
+        bikeprice = int(self.cost() * 1.20)
         # bikeprice = 8
         return bikeprice
-
 
 class Bikeshop(object):
     """
