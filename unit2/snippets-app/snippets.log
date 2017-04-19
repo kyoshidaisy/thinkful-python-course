@@ -695,3 +695,24 @@ DEBUG:root:Constructing update subparser
 DEBUG:root:Constructing catalog subparser
 DEBUG:root:Constructing search subparser
 DEBUG:root:Snippet search result retrieved successfully.
+DEBUG:root:Conneting to PostgreSQL
+DEBUG:root:Database connection established.
+INFO:root:Constructing parser
+DEBUG:root:Constructing put subparser
+DEBUG:root:Constructing get subparser
+DEBUG:root:Constructing update subparser
+DEBUG:root:Constructing update subparser
+DEBUG:root:Constructing catalog subparser
+DEBUG:root:Constructing search subparser
+INFO:root:Retrieving list of names
+DEBUG:root:Snippet names retrieved successfully.
+DEBUG:root:Conneting to PostgreSQL
+DEBUG:root:Database connection established.
+INFO:root:Constructing parser
+DEBUG:root:Constructing put subparser
+DEBUG:root:Constructing get subparser
+DEBUG:root:Constructing update subparser
+DEBUG:root:Constructing update subparser
+DEBUG:root:Constructing catalog subparser
+DEBUG:root:Constructing search subparser
+DEBUG:root:Snippet search result retrieved successfully.
