@@ -3,6 +3,36 @@ Bicycle Industry assignment
 Model the Bicycle Industry
 https://courses.thinkful.com/pip-001v3/project/1.3.4
 
+04/19/2017
+
+To do: 
+1. fix the error of bike_purchases
+
+2.  Disallow the purchase when the budget is negative: do after 1.5
+
+3. start extention exercise
+
+**Extension Exercise**
+
+If the extra challenges were not a problem and you're running ahead of schedule then you could try to extend your model even further to add bicycle manufacturers.
+
+Alter your classes
+You should add one or more classes to represent:
+
+Bicycle Manufacturers
+Have a name
+Produce three models of bikes each
+Have a percentage over cost which they sell bikes to bike shops at
+Then you should modify your Bicycle class again. The updated class should:
+
+Bicycle
+Have a manufacturer
+Update your testing script
+The testing script should be modified so that it:
+
+Creates two bicycle manufacturers, which both produce three different bicycle models
+Makes the bike shops stock their inventory by purchasing bikes from manufacturers
+
 04/14/2017 create altclass branch for extra challenge task
 
 04/14/2017 extend branch
@@ -32,7 +62,7 @@ Fixed the error
 
 2.  Disallow the purchase when the budget is negative: do after 1.5
 
-_**Work for extra challenge:**_ to create branch altclass
+_**Work for extra challenge:**_ to create branch altclass done: 04/18/2017
 
 Alter your classes
 You should add new classes to represent the following bike parts:
@@ -54,23 +84,3 @@ Have a weight equal to the sum of the weight of the frame and two wheels
 Have a cost to produce equal to the sum of the two wheels' and frame's cost to produce
 You may also need to update your testing script to reflect the changes that you have made here.
 
-**Extension Exercise**
-
-If the extra challenges were not a problem and you're running ahead of schedule then you could try to extend your model even further to add bicycle manufacturers.
-
-Alter your classes
-You should add one or more classes to represent:
-
-Bicycle Manufacturers
-Have a name
-Produce three models of bikes each
-Have a percentage over cost which they sell bikes to bike shops at
-Then you should modify your Bicycle class again. The updated class should:
-
-Bicycle
-Have a manufacturer
-Update your testing script
-The testing script should be modified so that it:
-
-Creates two bicycle manufacturers, which both produce three different bicycle models
-Makes the bike shops stock their inventory by purchasing bikes from manufacturers
