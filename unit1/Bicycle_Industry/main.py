@@ -1,15 +1,24 @@
-# main.py -- class file for the Bicycle Industry assignment -- #
+# main.py -- main file for the Bicycle Industry assignment -- #
 
-from bicycles import Bicycle, Bikeshop, Customer
+from bicycles import Wheel, Frame, Bicycle, Bikeshop, Customer
+
+# Wheel data
+Wheel1 = Wheel("Wheel1", 2, 5)
+Wheel2 = Wheel("Wheel2", 1.5, 10)
+Wheel3 = Wheel("Wheel3", 0.5, 22)
+
+# Frame data
+Frame1 = Frame("Aluminum", 10, 380)
+Frame2 = Frame("Carbon", 6, 700)
+Frame3 = Frame("Steel", 15, 100)
 
 # Bicycle data#
-
-Cruiser = Bicycle("Cruiser", 17, 150)
-BMX = Bicycle("BMX", 16, 210)
-Hybrid = Bicycle("Hybrid", 15, 300)
-Hardtail = Bicycle("Hardtail", 12, 400)
-Aluroad = Bicycle("Aluroad", 10, 600)
-Carbonracer = Bicycle("Carbonracer", 7, 800)
+Cruiser = Bicycle("Cruiser", Wheel1, Frame3)
+BMX = Bicycle("BMX", Wheel2, Frame3)
+Hybrid = Bicycle("Hybrid", Wheel3, Frame3)
+Hardtail = Bicycle("Hardtail", Wheel1, Frame1)
+Aluroad = Bicycle("Aluroad", Wheel2, Frame1)
+Carbonracer = Bicycle("Carbonracer", Wheel3, Frame2)
 
 # shop data#
 PythonCyclery = Bikeshop("PythonCyclery",
@@ -46,7 +55,8 @@ for customer in customers:
     # bike purchase dialog -- ask customer which bike he wants from the list and return bike_purchases
     bike_to_buy = str(input("\n\n{}, Which bike are you going to buy?   :".format(customer.custname)))
     if bike_to_buy in bikelist:
-        bike_purchases[customer.custname] = bike_to_buy  # Why it becomes as string with ' '? how to fix it?
+        bike_purchases[customer] = bike_to_buy
+        bikelist = []
     else:
         print('please select a bike from the list')
 
@@ -72,3 +82,4 @@ for customer in bike_purchases:
 print("{} Updated inventory".format(PythonCyclery.shopname))
 PythonCyclery.show_inventory(9999)
 print("   {} Total Profit is ${}".format(PythonCyclery.shopname, PythonCyclery.profit))
+

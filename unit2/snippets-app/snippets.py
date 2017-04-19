@@ -24,7 +24,6 @@ def put(name, snippet):
         with connection, connection.rollback() as rollback:
             rollback.execute("update snippets set message=%s where keyword=%s", (snippet, name))
     logging.debug("Snippet stored successfully.")
-    #    logging.error("FIXME: Unimplemented - put({!r}, {!r})".format(name, snippet))
     return name, snippet
 
 
@@ -40,7 +39,6 @@ def get(name):
         cursor.execute("select message from snippets where keyword=%s", (name,))
         row = cursor.fetchone()
     logging.debug("Snippet retrieved successfully.")
-    #   logging.error("FIXME: Unimplemented - get({!r})".format(name))
     if not row:
         # No snippet was found with that name.
         return "404: Snippet Not Found"
@@ -65,7 +63,6 @@ def update(name, snippet):
         command = "insert into snippets values (%s, %s)"
         cursor.execute(command, (name, snippet))
     logging.debug("Snippet stored successfully.")
-    #    logging.error("FIXME: Unimplemented - put({!r}, {!r})".format(name, snippet))
     return name, snippet
 
 
@@ -76,9 +73,43 @@ def delete(name):
 
     Returns the snippet.
     """
-    logging.error("FIXME: Unimplemented - get({!r})".format(name))
-    return "not deleted"
+    logging.info("Deleting snippet {!r}".format(name))
+    with connection, connection.cursor() as cursor:
+        cursor.execute("delete from snippets where keyword=%s", (name,))
+        connection.commit()
+    logging.debug("Snippet deleted successfully.")
+    return name
 
+
+def catalog():
+    """
+    look up the keywords
+    query keywords from snippet table
+    """
+    logging.info("Retrieving list of names")
+    with connection, connection.cursor() as cursor:
+        cursor.execute("select keyword from snippets")
+        row = cursor.fetchall()
+    logging.debug("Snippet names retrieved successfully.")
+    if not row:
+        # No keyword was found in snippet.
+        return "No snippet found"
+    return row
+
+
+def search(word):
+    """
+    Provide a search facility
+    listing snippets which contain a given 'word' strings anywhere in their messages. 
+    return the snippet
+    """
+    with connection, connection.cursor() as cursor:
+        cursor.execute("select * from snippets where message like '%%'||%s||'%%'", (word,))
+        result = cursor.fetchall()
+    logging.debug("Snippet search result retrieved successfully.")
+    if not result:
+        return "No snippet found"
+    return result
 
 def main():
     """Main function"""
@@ -94,15 +125,29 @@ def main():
     put_parser.add_argument("snippet", help="Snippet text")
 
     # Subparser for the get command
-    logging.debug("Constructing put subparser")
+    logging.debug("Constructing get subparser")
     get_parser = subparsers.add_parser("get", help="Retrieve a snippet")
     get_parser.add_argument("name", help="Name of the snippet")
 
-    # Subparser for the put command
+    # Subparser for the update command
     logging.debug("Constructing update subparser")
-    put_parser = subparsers.add_parser("update", help="Update a snippet")
-    put_parser.add_argument("name", help="Name of the snippet")
-    put_parser.add_argument("snippet", help="Snippet text")
+    update_parser = subparsers.add_parser("update", help="Update a snippet")
+    update_parser.add_argument("name", help="Name of the snippet")
+    update_parser.add_argument("snippet", help="Snippet text")
+
+    # Subparser for the delete command
+    logging.debug("Constructing update subparser")
+    delete_parser = subparsers.add_parser("delete", help="delete a snippet")
+    delete_parser.add_argument("name", help="Name of the snippet")
+
+    # Subparser for the catalog command
+    logging.debug("Constructing catalog subparser")
+    catalog_parser = subparsers.add_parser("catalog", help="Retrieve a name")
+
+    # Subparser for the search command
+    logging.debug("Constructing search subparser")
+    search_parser = subparsers.add_parser("search", help="search snippets")
+    search_parser.add_argument("word", help="search word for the snippet")
 
     arguments = parser.parse_args()
 
@@ -116,11 +161,24 @@ def main():
 
     elif command == "update":
         name, snippet = update(**arguments)
-        print("Update {!r} on {!r}".format(snippet, name))
+        print("Updated {!r} on {!r}".format(snippet, name))
 
     elif command == "get":
         snippet = get(**arguments)
         print("Retrieved snippet: {!r}".format(snippet))
+
+    elif command == "catalog":
+        print(catalog())
+        print("Retrieved list of names")
+
+    elif command == "delete":
+        name = delete(**arguments)
+        print("Deleted snippet: {!r}".format(name))
+
+    elif command == "search":
+        snippet = search(**arguments)
+        print("Retrieved the search result: {!r}:".format(snippet))
+
 
 
 if __name__ == "__main__":
