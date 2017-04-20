@@ -124,7 +124,8 @@ def main():
     put_parser.add_argument("name", help="Name of the snippet")
     put_parser.add_argument("snippet", help="Snippet text")
     put_parser.add_argument("--hide", help="Flags the hidden column True", action="store_true")
-    #    put_parser.add_argument("--unhide", help="Flags the hidden column False", action="store_false")
+    # put_parser.add_argument("--unhide", help="Flags the hidden column False", action="store_false") # should be conflicting option...
+
 
     # Subparser for the get command
     logging.debug("Constructing get subparser")
@@ -137,7 +138,7 @@ def main():
     update_parser.add_argument("name", help="Name of the snippet")
     update_parser.add_argument("snippet", help="Snippet text")
     update_parser.add_argument("--hide", help="Flags the hidden column True", action="store_true")
-    #    update_parser.add_argument("--unhide", help="Flags the hidden column False", action="store_false")
+    # update_parser.add_argument("--unhide", help="Flags the hidden column False")
 
     # Subparser for the delete command
     logging.debug("Constructing update subparser")
