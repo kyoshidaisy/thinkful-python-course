@@ -12,6 +12,7 @@ To do:
 
 3. start extention exercise
 
+
 **Extension Exercise**
 
 If the extra challenges were not a problem and you're running ahead of schedule then you could try to extend your model even further to add bicycle manufacturers.
