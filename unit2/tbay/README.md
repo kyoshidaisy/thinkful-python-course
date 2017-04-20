@@ -15,3 +15,5 @@ Goals
 Use SQLAlchemy to create tables and rows
 Query a database using SQLALchemy
 Create relationships between models_
+
+04/20/2017 completed 2.2.1
