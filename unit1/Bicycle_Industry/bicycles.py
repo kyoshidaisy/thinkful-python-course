@@ -26,7 +26,7 @@ class Bikeshop(object):
     shopname -string: Bile shop name = 'Python Cyclery'
     inventory -dic: Bike model [key] and inventory count [value] as integer
     margin - float - Percentage of bike sales price addition = 20%
-    profit - integer: Total profit made on bile sales = (cost * margin) / 100.0
+    profit - integer: Total profit made on bike sales = (cost * margin) / 100.0
     """
 
     def __init__(self, shopname, inventory=None, margin=0.0):
@@ -48,7 +48,8 @@ class Bikeshop(object):
             # Remove bike from inventory stock
             self.inventory[bicycle] -= 1
             # Confirmation
-            print("({} has successfully sold a {} and made ${} profit.)".format(self.shopname, bicycle.model, bikeprofit))
+            print(
+                "({} has successfully sold a {} and made ${} profit.)".format(self.shopname, bicycle.model, bikeprofit))
         else:
             print("{} bike is not in stock. Sorry.".format(bicycle))
 
@@ -57,10 +58,13 @@ class Bikeshop(object):
         if price_limit is None:
             price_limit = 9999
         print("Name    Count    Sale Price")
+        bikelist = []  # available bike list: use for bike purchase selection
         for b in self.inventory:
             saleprice = Bicycle.price(b)
             if saleprice < price_limit:
+                bikelist.append(b.model)
                 print("{}    {}    ${}".format(b.model, self.inventory[b], saleprice))
+        return bikelist
 
     def reset_profit(self):
         """ Reset profit balance to zero """
