@@ -17,3 +17,4 @@ Query a database using SQLALchemy
 Create relationships between models_
 
 04/20/2017 completed 2.2.1
+04/25/2017 completed 2.2.3
