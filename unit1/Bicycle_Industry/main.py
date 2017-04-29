@@ -46,23 +46,22 @@ print("\nWelcome our bike shop {}!\n".format(PythonCyclery.shopname))
 # name of the customer (each) and list of bikes in their budget
 bikelist = []
 for customer in customers:
-    print("{} Current Inventory for {}".format(PythonCyclery.shopname, customer.custname))
+    print("\n\n{} Current Inventory for {}\n".format(PythonCyclery.shopname, customer.custname))
     # print(PythonCyclery.show_inventory(9999))
-    PythonCyclery.show_inventory(customer.budget)
-    print('\n\n')
+    # PythonCyclery.show_inventory(customer.budget)
     bikelist.extend(PythonCyclery.show_inventory(customer.budget))
-    print(bikelist)
+    # print(bikelist)
     # bike purchase dialog -- ask customer which bike he wants from the list and return bike_purchases
-    bike_to_buy = str(input("\n\n{}, Which bike are you going to buy?   :".format(customer.custname)))
+    bike_to_buy = input("\n{}, Which bike are you going to buy?   : \n".format(customer.custname))
     if bike_to_buy in bikelist:
-        bike_purchases[customer.custname] = bike_to_buy
+        bike_purchases[customer] = eval(bike_to_buy)
         bikelist = []
     else:
         print('please select a bike from the list')
 
 # print2
 # initial inventory of the shop
-print("Shop: {} -- Initial Inventory".format(PythonCyclery.shopname))
+print("\nShop: {} -- Initial Inventory\n".format(PythonCyclery.shopname))
 PythonCyclery.show_inventory(9999)
 print('\n\n')
 
@@ -70,11 +69,12 @@ print('\n\n')
 # have each of the customer purchase a bike
 # print the name of bike, cost, rest of his fund
 PythonCyclery.reset_profit()
-# bike_purchases = {Dave: Cruiser, Paul: Hardtail, Matt: Carbonracer, }
-print(bike_purchases)
+# bike_purchases = {Dave: Cruiser, Paul: Hardtail, Matt: Carbonracer, } # For test
+# print(bike_purchases) # For test
 for customer in bike_purchases:
     bike_sold = bike_purchases[customer]
-    customer.purchase(bike_sold)
+    bikeprice = PythonCyclery.getBikeprice(bike_sold)
+    customer.purchase(bike_sold, bikeprice)
     PythonCyclery.sell_bike(bike_sold)
     print("  ")
 
