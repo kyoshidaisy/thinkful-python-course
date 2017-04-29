@@ -3,6 +3,10 @@ Bicycle Industry assignment
 Model the Bicycle Industry
 https://courses.thinkful.com/pip-001v3/project/1.3.4
 
+04/29/2017
+Fixed and now functional
+Next to do: Extention exercise (Alter classes to add manufacturers)
+
 04/15/2017 altclass
 Added and modified Wheel and Frame class and data successfully
 
