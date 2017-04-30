@@ -81,7 +81,7 @@ class Bikeshop(object):
             bikeprofit = self.getBikeprofit(bicycle)
             # print(bikeprofit) # For test
             # Add profit to profit balance
-            self.profit += self.getBikeprofit(bicycle)
+            self.profit += bikeprofit
             # Remove bike from inventory stock
             self.inventory[bicycle] -= 1
             # Confirmation
