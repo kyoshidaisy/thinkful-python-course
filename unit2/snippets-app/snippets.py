@@ -11,7 +11,7 @@ connection = psycopg2.connect(database='snippets')
 logging.debug("Database connection established.")
 
 
-def put(name, snippet):
+def put(name, snippet, hide=False):
     """
     Store a snippet with an associated name.
         Returns the name and the snippet
@@ -19,10 +19,10 @@ def put(name, snippet):
     logging.info("Storing snippet {!r}: {!r}".format(name, snippet))
     try:
         with connection, connection.cursor() as cursor:
-            cursor.execute("insert into snippets values (%s, %s)", (name, snippet))
+            cursor.execute("insert into snippets values (%s, %s, %s)", (name, snippet, hide))
     except psycopg2.IntegrityError as e:
         with connection, connection.rollback() as rollback:
-            rollback.execute("update snippets set message=%s where keyword=%s", (snippet, name))
+            rollback.execute("update snippets set message=%s, hidden=%s where keyword=%s", (snippet, hide, name))
     logging.debug("Snippet stored successfully.")
     return name, snippet
 
@@ -45,7 +45,7 @@ def get(name):
     return row[0]
 
 
-def update(name, snippet):
+def update(name, snippet, hide=False):
     """Update a snippet with an given name."
 
     If there is no such snippet, return '404: Snippet Not Found'.
@@ -54,14 +54,14 @@ def update(name, snippet):
     """
     logging.info("Updating snippet {!r}: {!r}".format(name, snippet))
     cursor = connection.cursor()
-    command = 'update snippets set message=%s where keyword=%s'
+    command = "update snippets set message=%s, hidden=%s where keyword=%s"
     try:
-        cursor.execute(command, (snippet, name))
+        cursor.execute(command, (snippet, hide, name))
         connection.commit()
     except psycopg2.IntegrityError as e:
         connection.rollback()
-        command = "insert into snippets values (%s, %s)"
-        cursor.execute(command, (name, snippet))
+        command = "insert into snippets values (%s, %s, %s)"
+        cursor.execute(command, (name, snippet, hide))
     logging.debug("Snippet stored successfully.")
     return name, snippet
 
@@ -80,7 +80,6 @@ def delete(name):
     logging.debug("Snippet deleted successfully.")
     return name
 
-
 def catalog():
     """
     look up the keywords
@@ -88,7 +87,7 @@ def catalog():
     """
     logging.info("Retrieving list of names")
     with connection, connection.cursor() as cursor:
-        cursor.execute("select keyword from snippets")
+        cursor.execute("select keyword from snippets where not hidden")
         row = cursor.fetchall()
     logging.debug("Snippet names retrieved successfully.")
     if not row:
@@ -96,6 +95,20 @@ def catalog():
         return "No snippet found"
     return row
 
+
+def search(word):
+    """
+    Provide a search facility
+    listing snippets which contain a given 'word' strings anywhere in their messages. 
+    return the snippet
+    """
+    with connection, connection.cursor() as cursor:
+        cursor.execute("select * from snippets where not hidden and message like '%%'||%s||'%%'", (word,))
+        result = cursor.fetchall()
+    logging.debug("Snippet search result retrieved successfully.")
+    if not result:
+        return "No snippet found"
+    return result
 
 def main():
     """Main function"""
@@ -109,6 +122,9 @@ def main():
     put_parser = subparsers.add_parser("put", help="Store a snippet")
     put_parser.add_argument("name", help="Name of the snippet")
     put_parser.add_argument("snippet", help="Snippet text")
+    put_parser.add_argument("--hide", help="Flags the hidden column True", action="store_true")
+    # put_parser.add_argument("--unhide", help="Flags the hidden column False", action="store_false") # should be conflicting option...
+
 
     # Subparser for the get command
     logging.debug("Constructing get subparser")
@@ -120,6 +136,8 @@ def main():
     update_parser = subparsers.add_parser("update", help="Update a snippet")
     update_parser.add_argument("name", help="Name of the snippet")
     update_parser.add_argument("snippet", help="Snippet text")
+    update_parser.add_argument("--hide", help="Flags the hidden column True", action="store_true")
+    # update_parser.add_argument("--unhide", help="Flags the hidden column False")
 
     # Subparser for the delete command
     logging.debug("Constructing update subparser")
@@ -128,7 +146,11 @@ def main():
 
     # Subparser for the catalog command
     logging.debug("Constructing catalog subparser")
-    catalog_parser = subparsers.add_parser("catalog", help="Retrieve a name")
+    catalog_parser = subparsers.add_parser("catalog", help="Retrieve a name"
+    # Subparser for the search command
+    logging.debug("Constructing search subparser")
+    search_parser = subparsers.add_parser("search", help="search snippets")
+    search_parser.add_argument("word", help="search word for the snippet")
 
     arguments = parser.parse_args()
 
@@ -156,7 +178,9 @@ def main():
         name = delete(**arguments)
         print("Deleted snippet: {!r}".format(name))
 
-
+    elif command == "search":
+        snippet = search(**arguments)
+        print("Retrieved the search result: {!r}:".format(snippet))
 
 if __name__ == "__main__":
     main()
