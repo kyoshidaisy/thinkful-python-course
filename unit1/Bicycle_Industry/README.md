@@ -3,6 +3,15 @@ Bicycle Industry assignment
 Model the Bicycle Industry
 https://courses.thinkful.com/pip-001v3/project/1.3.4
 
+04/29/2017
+Fixed and now functional
+Next to do: Extention exercise (Alter classes to add manufacturers)
+
+04/15/2017 altclass
+Added and modified Wheel and Frame class and data successfully
+
+04/13/2017 create altclass branch
+
 04/19/2017
 
 To do: 
@@ -43,7 +52,6 @@ Traceback (most recent call last):
   File "/home/koji/PycharmProjects/thinkful-python-course/unit1/Bicycle_Industry/main.py", line 67, in <module>
     customer.purchase(bike_sold)
 AttributeError: 'str' object has no attribute 'purchase'
-
 
 04/13/2017 extend branch
 Added purchase selection dialog -- error line 67 of main.py --

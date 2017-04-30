@@ -80,7 +80,6 @@ def delete(name):
     logging.debug("Snippet deleted successfully.")
     return name
 
-
 def catalog():
     """
     look up the keywords
@@ -147,8 +146,7 @@ def main():
 
     # Subparser for the catalog command
     logging.debug("Constructing catalog subparser")
-    catalog_parser = subparsers.add_parser("catalog", help="Retrieve a name")
-
+    catalog_parser = subparsers.add_parser("catalog", help="Retrieve a name"
     # Subparser for the search command
     logging.debug("Constructing search subparser")
     search_parser = subparsers.add_parser("search", help="search snippets")
@@ -183,8 +181,6 @@ def main():
     elif command == "search":
         snippet = search(**arguments)
         print("Retrieved the search result: {!r}:".format(snippet))
-
-
 
 if __name__ == "__main__":
     main()

@@ -1,12 +1,12 @@
 # bicycles.py -- class file for the Bicycle Industry assignment --
-# Class
+# Classes
 
-
-class Bicycle(object):
+class Wheel(object):
     """
-    model -string: Bike model name
-    weight - integer: Bike wight in lbs
-    cost - integer: Bike production cost
+    Wheel class
+    model - string: wheel model name
+    weight - integer: single wheel weight
+    cost - integer: produce cost
     """
 
     def __init__(self, model, weight, cost):
@@ -14,12 +14,43 @@ class Bicycle(object):
         self.weight = weight
         self.cost = cost
 
-    def price(self):
-        """Return sale price for a bike"""
-        bikeprice = int(self.cost * 1.20)
-        # bikeprice = 8
-        return bikeprice
 
+class Frame(object):
+    """
+    Frame class
+    model - string: frame model name - aluminum, carbon, or steel
+    weight - integer: frame weight
+    cost - integer: produce cost
+    """
+
+    def __init__(self, model, weight, cost):
+        self.model = model
+        self.weight = weight
+        self.cost = cost
+
+
+class Bicycle(object):
+    """
+    model -string: Bike model name
+    weight - integer: Bike wight in lbs
+    cost - integer: Bike production cost
+    - Be comprised of two wheels of the same type and a frame
+    - Have a weight equal to the sum of the weight of the frame and two wheels
+    - Have a cost to produce equal to the sum of the two wheels' and frame's cost to produce
+    """
+
+    def __init__(self, model, wheeltype, frametype):
+        self.model = model
+        self.wheeltype = wheeltype
+        self.frametype = frametype
+
+    def weight(self):
+        bikeweight = (self.wheeltype.weight * 2) + self.frametype.weight
+        return bikeweight
+
+    def cost(self):
+        bikecost = (self.wheeltype.cost * 2) + self.frametype.cost
+        return bikecost
 
 class Bikeshop(object):
     """
@@ -29,22 +60,28 @@ class Bikeshop(object):
     profit - integer: Total profit made on bike sales = (cost * margin) / 100.0
     """
 
-    def __init__(self, shopname, inventory=None, margin=0.0):
+    def __init__(self, shopname, inventory=None, margin=0.20):
         if inventory is None:
             inventory = {}
         self.shopname = shopname
         self.inventory = inventory
         self.margin = margin
-        self.profit = 0
+
+    def getBikeprofit(self, bicycle):
+        return int(bicycle.cost() * self.margin)
+
+    def getBikeprice(self, bicycle):
+        return bicycle.cost() + self.getBikeprofit(bicycle)
 
     def sell_bike(self, bicycle):
         """Sell bicycle with the price, return profit, and add to sales balance"""
         # Check if bike is available in inventory
         if self.inventory[bicycle] > 0:
-            # Calc the bike profit
-            bikeprofit = (Bicycle.price(bicycle) - bicycle.cost)
+            # Call the bike profit
+            bikeprofit = self.getBikeprofit(bicycle)
+            # print(bikeprofit) # For test
             # Add profit to profit balance
-            self.profit += bikeprofit
+            self.profit += self.getBikeprofit(bicycle)
             # Remove bike from inventory stock
             self.inventory[bicycle] -= 1
             # Confirmation
@@ -60,10 +97,10 @@ class Bikeshop(object):
         print("Name    Count    Sale Price")
         bikelist = []  # available bike list: use for bike purchase selection
         for b in self.inventory:
-            saleprice = Bicycle.price(b)
-            if saleprice < price_limit:
+            bikeprice = self.getBikeprice(b)
+            if bikeprice < price_limit:
                 bikelist.append(b.model)
-                print("{}    {}    ${}".format(b.model, self.inventory[b], saleprice))
+                print("{}    {}    ${}".format(b.model, self.inventory[b], bikeprice))
         return bikelist
 
     def reset_profit(self):
@@ -79,13 +116,13 @@ class Customer(object):
     bicycle - bicycle class: Bike owned by customer
     """
 
-    def __init__(self, custname, budget):
+    def __init__(self, custname, budget, bicycle=None):
         self.custname = custname
         self.budget = budget
+        self.bicycle = bicycle
 
-    def purchase(self, bicycle):
+    def purchase(self, bicycle, bikeprice):
         """Customer purchases bike and reduce budget"""
-        bikeprice = Bicycle.price(bicycle)
         self.bicycle = bicycle
         self.budget -= bikeprice
         # Confirmation
