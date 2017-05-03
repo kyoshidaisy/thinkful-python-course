@@ -16,22 +16,23 @@ def put(name, snippet, hide=False):
     Store a snippet with an associated name.
         Returns the name and the snippet
     """
-    logging.info("Storing snippet {!r}: {!r}".format(name, snippet))
-    try:
-        with connection, connection.cursor() as cursor:
+    logging.info("Storing snippet {!r}: {!r} - option :{!r}".format(name, snippet, hide))
+    with connection, connection.cursor() as cursor:
+        try:
             cursor.execute("insert into snippets values (%s, %s, %s)", (name, snippet, hide))
-    except psycopg2.IntegrityError as e:
-        with connection, connection.rollback() as rollback:
-            rollback.execute("update snippets set message=%s, hidden=%s where keyword=%s", (snippet, hide, name))
-    logging.debug("Snippet stored successfully.")
+        except psycopg2.IntegrityError as e:
+            logging.debug("updating existent entry {!r} -- {!r}".format(name, e))
+            connection.rollback()
+            cursor.execute("update snippets set message=%s, hidden=%s where keyword=%s", (snippet, hide, name))
+            print("Existent snippet {!r} is updated.".format(name))
+
+    logging.debug("Snippet saved successfully")
     return name, snippet
 
 
 def get(name):
     """Retrieve the snippet with a given name.
-
     If there is no such snippet, return '404: Snippet Not Found'.
-
     Returns the snippet.
     """
     logging.info("Retrieving snippet {!r}".format(name))
@@ -45,32 +46,9 @@ def get(name):
     return row[0]
 
 
-def update(name, snippet, hide=False):
-    """Update a snippet with an given name."
-
-    If there is no such snippet, return '404: Snippet Not Found'.
-
-    Returns the snippet.
-    """
-    logging.info("Updating snippet {!r}: {!r}".format(name, snippet))
-    cursor = connection.cursor()
-    command = "update snippets set message=%s, hidden=%s where keyword=%s"
-    try:
-        cursor.execute(command, (snippet, hide, name))
-        connection.commit()
-    except psycopg2.IntegrityError as e:
-        connection.rollback()
-        command = "insert into snippets values (%s, %s, %s)"
-        cursor.execute(command, (name, snippet, hide))
-    logging.debug("Snippet stored successfully.")
-    return name, snippet
-
-
 def delete(name):
     """Delete the snippet with a given name with confirmation.
-
     If there is no such snippet, return '404: Snippet Not Found'.
-
     Returns the snippet.
     """
     logging.info("Deleting snippet {!r}".format(name))
@@ -79,6 +57,7 @@ def delete(name):
         connection.commit()
     logging.debug("Snippet deleted successfully.")
     return name
+
 
 def catalog():
     """
@@ -93,6 +72,7 @@ def catalog():
     if not row:
         # No keyword was found in snippet.
         return "No snippet found"
+
     return row
 
 
@@ -103,8 +83,9 @@ def search(word):
     return the snippet
     """
     with connection, connection.cursor() as cursor:
-        cursor.execute("select * from snippets where not hidden and message like '%%'||%s||'%%'", (word,))
-        result = cursor.fetchall()
+        cursor.execute("select keyword, message from snippets where not hidden and message like '%%'||%s||'%%'",
+                       (word,))
+        result = [result for result in cursor.fetchall()]
     logging.debug("Snippet search result retrieved successfully.")
     if not result:
         return "No snippet found"
@@ -122,22 +103,14 @@ def main():
     put_parser = subparsers.add_parser("put", help="Store a snippet")
     put_parser.add_argument("name", help="Name of the snippet")
     put_parser.add_argument("snippet", help="Snippet text")
-    put_parser.add_argument("--hide", help="Flags the hidden column True", action="store_true")
-    # put_parser.add_argument("--unhide", help="Flags the hidden column False", action="store_false") # should be conflicting option...
+    put_parser.add_argument("--hide", help="flag the hidden column True", action="store_true")
+    # put_parser.add_argument("--unhide", help="flag the hidden column False", action="store_false") # should be conflicting option...
 
 
     # Subparser for the get command
     logging.debug("Constructing get subparser")
     get_parser = subparsers.add_parser("get", help="Retrieve a snippet")
     get_parser.add_argument("name", help="Name of the snippet")
-
-    # Subparser for the update command
-    logging.debug("Constructing update subparser")
-    update_parser = subparsers.add_parser("update", help="Update a snippet")
-    update_parser.add_argument("name", help="Name of the snippet")
-    update_parser.add_argument("snippet", help="Snippet text")
-    update_parser.add_argument("--hide", help="Flags the hidden column True", action="store_true")
-    # update_parser.add_argument("--unhide", help="Flags the hidden column False")
 
     # Subparser for the delete command
     logging.debug("Constructing update subparser")
@@ -146,7 +119,8 @@ def main():
 
     # Subparser for the catalog command
     logging.debug("Constructing catalog subparser")
-    catalog_parser = subparsers.add_parser("catalog", help="Retrieve a name"
+    catalog_parser = subparsers.add_parser("catalog", help="Retrieve a name")
+
     # Subparser for the search command
     logging.debug("Constructing search subparser")
     search_parser = subparsers.add_parser("search", help="search snippets")
@@ -162,10 +136,6 @@ def main():
         name, snippet = put(**arguments)
         print("Stored {!r} as {!r}".format(snippet, name))
 
-    elif command == "update":
-        name, snippet = update(**arguments)
-        print("Updated {!r} on {!r}".format(snippet, name))
-
     elif command == "get":
         snippet = get(**arguments)
         print("Retrieved snippet: {!r}".format(snippet))
@@ -179,8 +149,8 @@ def main():
         print("Deleted snippet: {!r}".format(name))
 
     elif command == "search":
-    snippet = search(**arguments)
-    print("Retrieved the search result: {!r}:".format(snippet))
+        snippet = search(**arguments)
+        print("Retrieved the search result: {!r}:".format(snippet))
 
 if __name__ == "__main__":
     main()
