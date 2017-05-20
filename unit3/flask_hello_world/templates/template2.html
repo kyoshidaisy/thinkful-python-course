@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+    {% extends "base.html" %}
+
+{% block content %}
+    <h3> {{my_greeting}}</h3>
+    <br>
+    <p>{{my_string}}</p>
+    <img src="{{image_pl}}">
+{% endblock %}
+
+{% block footer %}
+{{super()}}
+{% endblock %}
+
+    </body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+{% from "macros.html" import nav_link with context %}
+<html>
+    <head>
+        <title>Hello World app assignment by kyoshidaisy</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            div#main {
+                max-width: 500px;
+                padding: 20px;
+            }
+
+            nav .title {
+                font-weight: bold;
+            }
+
+            a.active {
+                font-weight: bold;
+            }
+        </style>
+    </head>
+    <body>
+        <nav>
+            <span class="title">Menu</span>
+        <ul class="nav navbar-nav">
+          {{ nav_link('say_hi', 'Home') }}
+          {{ nav_link('say_hi', 'Hello') }}
+          {{ nav_link('nav_2_jedi', 'Jedi') }}
+        </ul>
+        
+        <div id="main">
+            <h4>Hello World app assignment</h4>
+            <br>
+            {% block content %}{% endblock %}
+            <br>
+        </div>
+        <footer>
+        {% block footer %}
+            This is created for the part of assignment of Thinkful Python course.  
+            <br>
+            <br>
+        {% endblock %}
+        </footer>
+    </body>
+</html>

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+    {% extends "base.html" %}
+
+{% block content %}
+    <h1> {{my_greeting}}</h1>
+    <br>
+    <p>{{my_string}}</p>
+        <h4>Current date/time: {{ current_time | datetimefilter }}</h4>
+{% endblock %}
+
+{% block footer %}
+{{super()}}
+{% endblock %}
+
+    </body>
+</html>
