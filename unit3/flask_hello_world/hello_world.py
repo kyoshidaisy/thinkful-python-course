@@ -44,9 +44,4 @@ def datetimefilter(value, format='%Y/%m/%d %H:%M'):
 
 
 if __name__ == "__main__":
-    app.run(debug=True,
-            host=environ['IP'],
-            port=int(environ['PORT']))
-
-            
-            
+    app.run(host='0.0.0.0', port=80)
