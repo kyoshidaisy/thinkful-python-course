@@ -34,10 +34,10 @@ deactivate () {
     fi
 }
 
-# unset irrelavent variables
+# unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/home/ubuntu/workspace/thinkful/flask_hello_world/env"
+VIRTUAL_ENV="/home/koji/PycharmProjects/thinkful-python-course/unit3/flask_hello_world/env"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"
